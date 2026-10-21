@@ -49,7 +49,8 @@ public class BlockBreakerGame extends ApplicationAdapter {
 		    for (int cont = 0; cont<filas; cont++ ) {
 		    	y -= blockHeight+10;
 		    	for (int x = 5; x < Gdx.graphics.getWidth(); x += blockWidth + 10) {
-		            blocks.add(new Block(x, y, blockWidth, blockHeight));
+		    		// Ahora el tipo de bloque que se crea es la subclase NormalBlock
+		    		blocks.add(new NormalBlock(x, y, blockWidth, blockHeight));
 		        }
 		    }
 		}
@@ -102,7 +103,8 @@ public class BlockBreakerGame extends ApplicationAdapter {
 	        // actualizar estado de los bloques 
 	        for (int i = 0; i < blocks.size(); i++) {
 	            Block b = blocks.get(i);
-	            if (b.destroyed) {
+	            //Se modifico el get
+	            if (b.isDestroyed()) {
 	            	puntaje++;
 	                blocks.remove(b);
 	                i--; //para no saltarse 1 tras eliminar del arraylist

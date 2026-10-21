@@ -71,13 +71,16 @@ public class PingBall {
 	    public void checkCollision(Block block) {
 	        if(collidesWith(block)){
 	            ySpeed = - ySpeed;
-	            block.destroyed = true;
+	            
+	            //Se cambió el acceso a la modificacion de datos por el set correspondiente
+	            block.setDestroyed(true);
 	        }
 	    }
 	    private boolean collidesWith(Block bb) {
 
-	    	boolean intersectaX = (bb.x + bb.width >= x-size) && (bb.x <= x+size);
-	        boolean intersectaY = (bb.y + bb.height >= y-size) && (bb.y <= y+size);		
+	    	//Se modificó el acceso de datos a través de los gets correspondientes
+	    	boolean intersectaX = (bb.getX() + bb.getWidth() >= x-size) && (bb.getX() <= x+size);
+	        boolean intersectaY = (bb.getY() + bb.getHeight() >= y-size) && (bb.getY() <= y+size);		
 	    	return intersectaX && intersectaY;
 	    }
 	    
