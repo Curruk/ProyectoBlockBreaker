@@ -72,8 +72,8 @@ public class PingBall {
 	        if(collidesWith(block)){
 	            ySpeed = - ySpeed;
 	            
-	            //Se cambió el acceso a la modificacion de datos por el set correspondiente
-	            block.setDestroyed(true);
+	            //Se cambió el comportamiento del gope por el método abtracto recibirGolpe, para generar distintos comportamientos
+	            block.recibirGolpe();
 	        }
 	    }
 	    private boolean collidesWith(Block bb) {

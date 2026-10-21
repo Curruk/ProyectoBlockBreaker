@@ -49,8 +49,16 @@ public class BlockBreakerGame extends ApplicationAdapter {
 		    for (int cont = 0; cont<filas; cont++ ) {
 		    	y -= blockHeight+10;
 		    	for (int x = 5; x < Gdx.graphics.getWidth(); x += blockWidth + 10) {
-		    		// Ahora el tipo de bloque que se crea es la subclase NormalBlock
-		    		blocks.add(new NormalBlock(x, y, blockWidth, blockHeight));
+		    		
+		    		//Creamos HardBlocks en la primera fila
+		    		if (cont == 0) {
+		    			blocks.add(new HardBlock(x, y, blockWidth, blockHeight));
+		    		} 
+		    		else {
+		    		
+		    			// Ahora el tipo de bloque que se crea es la subclase NormalBlock
+		    			blocks.add(new NormalBlock(x, y, blockWidth, blockHeight));
+		    		}
 		        }
 		    }
 		}
