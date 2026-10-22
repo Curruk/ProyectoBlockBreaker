@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Paddle {
+public class Paddle implements Renderizable {
     private int x = 20;
     private int y = 20;
     private int width = 100;
@@ -23,6 +23,7 @@ public class Paddle {
 	public int getWidth() {return width;}
 	public int getHeight() {return height;}
 
+	@Override
 	public void draw(ShapeRenderer shape){
         shape.setColor(Color.BLUE);
         int x2 = x; //= Gdx.input.getX();
@@ -34,6 +35,6 @@ public class Paddle {
         }
         shape.rect(x, y, width, height);
     }
-    
+
     
 }

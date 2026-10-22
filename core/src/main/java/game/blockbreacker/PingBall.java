@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class PingBall {
+public class PingBall implements Renderizable {
 	    private int x;
 	    private int y;
 	    private int size;
@@ -35,6 +35,7 @@ public class PingBall {
 	    }
 	    public int getY() {return y;}
 	    
+	    @Override
 	    public void draw(ShapeRenderer shape){
 	        shape.setColor(color);
 	        shape.circle(x, y, size);

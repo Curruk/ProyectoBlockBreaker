@@ -6,7 +6,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 
-public abstract class Block {
+public abstract class Block implements Renderizable {
     private int x,y,width,height;
     private Color cc;
     private boolean destroyed;
@@ -23,6 +23,7 @@ public abstract class Block {
   
     }
     
+    @Override
     public void draw(ShapeRenderer shape){
     	shape.setColor(cc);
         shape.rect(x, y, width, height);
