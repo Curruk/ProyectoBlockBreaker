@@ -38,26 +38,21 @@ public class BlockBreakerGame extends ApplicationAdapter {
 		    pad = new Paddle(Gdx.graphics.getWidth()/2-50,40,100,10);
 		       
 		}
+
 		public void crearBloques(int filas) {
-			blocks.clear();
-			int blockWidth = 70;
-		    int blockHeight = 26;
-		    int y = Gdx.graphics.getHeight();
-		    for (int cont = 0; cont<filas; cont++ ) {
-		    	y -= blockHeight+10;
-		    	for (int x = 5; x < Gdx.graphics.getWidth(); x += blockWidth + 10) {
-		    		
-		    		//Creamos HardBlocks en la primera fila
-		    		if (cont == 0) {
-		    			blocks.add(new HardBlock(x, y, blockWidth, blockHeight));
-		    		} 
-		    		else {
-		    		
-		    			// Ahora el tipo de bloque que se crea es la subclase NormalBlock
-		    			blocks.add(new NormalBlock(x, y, blockWidth, blockHeight));
-		    		}
-		        }
-		    }
+
+			Nivel nivelActual;
+
+			if (filas < 5) {
+				nivelActual = new NivelFacil();
+			} else {
+				nivelActual = new NivelDificil();
+			}
+
+			blocks = nivelActual.crearNivel(
+				Gdx.graphics.getWidth(),
+				Gdx.graphics.getHeight()
+			);
 		}
 		public void dibujaTextos() {
 			//actualizar matrices de la cámara
