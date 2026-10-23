@@ -13,6 +13,7 @@ public class PingBall implements Renderizable {
 	    private int ySpeed;
 	    private Color color = Color.WHITE;
 	    private boolean estaQuieto;
+	    private MovimientoPelota estrategia;
 	    
 	    public PingBall(int x, int y, int size, int xSpeed, int ySpeed, boolean iniciaQuieto) {
 	        this.x = x;
@@ -21,6 +22,7 @@ public class PingBall implements Renderizable {
 	        this.xSpeed = xSpeed;
 	        this.ySpeed = ySpeed;
 	        estaQuieto = iniciaQuieto;
+	        estrategia = new MovimientoNormal();
 	    }
 	    
 	    public boolean estaQuieto() {
@@ -34,6 +36,13 @@ public class PingBall implements Renderizable {
 	        this.y = y;
 	    }
 	    public int getY() {return y;}
+
+	    public void setEstrategia(MovimientoPelota estrategia) {
+	    	if (estrategia != null) {
+	    		this.estrategia = estrategia;
+	    	}
+	    }
+
 	    
 	    @Override
 	    public void draw(ShapeRenderer shape){
@@ -42,12 +51,15 @@ public class PingBall implements Renderizable {
 	    }
 	    
 	    public void update() {
-	    	if (estaQuieto) return;
-	        x += xSpeed;
-	        y += ySpeed;
+	        if (estaQuieto) return;
+
+	        x += estrategia.calcularDesplazamiento(xSpeed);
+	        y += estrategia.calcularDesplazamiento(ySpeed);
+
 	        if (x-size < 0 || x+size > Gdx.graphics.getWidth()) {
 	            xSpeed = -xSpeed;
 	        }
+
 	        if (y+size > Gdx.graphics.getHeight()) {
 	            ySpeed = -ySpeed;
 	        }
