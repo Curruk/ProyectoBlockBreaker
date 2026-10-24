@@ -8,14 +8,14 @@ public class HardLevel extends Level {
         return 5;
     }
 
+
     @Override
-    protected Block crearBloque(int fila, int x, int y,
-                                int ancho, int alto) {
+    protected Block crearBloque(int fila, int x, int y, int ancho, int alto) {
 
-        if (fila < 2) {
-            return new HardBlock(x, y, ancho, alto);
-        }
+    	NormalBlock bloque = new NormalBlock(x, y, ancho, alto);
+    	bloque.setColor(com.badlogic.gdx.graphics.Color.PURPLE);
 
-        return new NormalBlock(x, y, ancho, alto);
+    	return bloque;
     }
+
 }

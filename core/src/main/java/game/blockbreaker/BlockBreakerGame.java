@@ -39,21 +39,40 @@ public class BlockBreakerGame extends ApplicationAdapter {
 		       
 		}
 
+
 		public void crearBloques(int filas) {
 
 			Level nivelActual;
+			ConfiguracionNivel config;
 
 			if (filas < 5) {
 				nivelActual = new EasyLevel();
+
+				config = new ConfiguracionNivelBuilder()
+						.filas(3)
+						.filasResistentes(1)
+						.anchoBloque(70)
+						.altoBloque(26)
+						.build();
+
 			} else {
 				nivelActual = new HardLevel();
+
+				config = new ConfiguracionNivelBuilder()
+						.filas(5)
+						.filasResistentes(2)
+						.anchoBloque(70)
+						.altoBloque(26)
+						.build();
 			}
 
 			blocks = nivelActual.crearNivel(
-				Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight()
-			);
+					Gdx.graphics.getWidth(),
+					Gdx.graphics.getHeight(),
+					config
+					);
 		}
+
 		public void dibujaTextos() {
 			//actualizar matrices de la cámara
 			camera.update();
