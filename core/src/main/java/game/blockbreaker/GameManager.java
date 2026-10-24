@@ -13,7 +13,7 @@ public class GameManager {
 
     // Constructor privado
     private GameManager() {
-        vidas = 3;
+        vidas = 5;
         puntaje = 0;
         nivel = 1;
     }
@@ -48,7 +48,7 @@ public class GameManager {
     }
 
     public void reiniciarPartida() {
-        vidas = 3;
+        vidas = 5;
         puntaje = 0;
         nivel = 1;
     }

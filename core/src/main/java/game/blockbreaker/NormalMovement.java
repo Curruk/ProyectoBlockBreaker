@@ -4,7 +4,7 @@ package game.blockbreaker;
 public class NormalMovement implements BallMovement {
 
     @Override
-    public int calcularDesplazamiento(int velocidad) {
+    public float calcularDesplazamiento(float velocidad) {
         return velocidad;
     }
 

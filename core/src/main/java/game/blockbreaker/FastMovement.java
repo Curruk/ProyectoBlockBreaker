@@ -4,8 +4,8 @@ package game.blockbreaker;
 public class FastMovement implements BallMovement {
 
     @Override
-    public int calcularDesplazamiento(int velocidad) {
-        return velocidad * 2;
+    public float calcularDesplazamiento(float velocidad) {
+        return velocidad * 1.8f;
     }
 
 }

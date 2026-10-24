@@ -1,6 +1,6 @@
 package game.blockbreaker;
 
 public interface BallMovement {
-	int calcularDesplazamiento(int velocidad);
+	float calcularDesplazamiento(float velocidad);
 
 }

@@ -12,9 +12,9 @@ public abstract class Level {
 
         int filas = obtenerFilas();
 
-        int anchoBloque = 70;
-        int altoBloque = 26;
-        int y = alto;
+        int anchoBloque = 81;
+        int altoBloque = 40;
+        int y = alto - 40;
 
         for (int fila = 0; fila < filas; fila++) {
 

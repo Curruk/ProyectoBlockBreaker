@@ -31,28 +31,26 @@ public class BlockBreakerGame extends ApplicationAdapter {
 		    font = new BitmapFont();
 		    font.getData().setScale(3, 2);
 		    gestor.reiniciarPartida();
-		    crearBloques(2 + gestor.getNivel());
+		    crearBloques();
 			
 		    shape = new ShapeRenderer();
-		    ball = new PingBall(Gdx.graphics.getWidth()/2-10, 41, 10, 5, 7, true);
+		    ball = new PingBall(Gdx.graphics.getWidth()/2-10, 41, 9, 5, 7, true);
 		    pad = new Paddle(Gdx.graphics.getWidth()/2-50,40,100,10);
 		       
 		}
 
-		public void crearBloques(int filas) {
+		public void crearBloques() {
 
-			Level nivelActual;
+			Level nivelActual = null;
+			int nivel = gestor.getNivel();
 
-			if (filas < 5) {
+			if (nivel == 1) {
 				nivelActual = new EasyLevel();
-			} else {
+			} else if (nivel == 2) {
 				nivelActual = new HardLevel();
 			}
 
-			blocks = nivelActual.crearNivel(
-				Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight()
-			);
+			blocks = nivelActual.crearNivel(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
 		public void dibujaTextos() {
 			//actualizar matrices de la cámara
@@ -99,27 +97,37 @@ public class BlockBreakerGame extends ApplicationAdapter {
 			if (ball.getY() < 0) {
 				gestor.perderVida();
 
-				ball = new PingBall(
-						pad.getX()+pad.getWidth()/2-5,
-						pad.getY()+pad.getHeight()+11,
-						10, 5, 7, true);
+				ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 9, 5, 7, true);
+				
+				//Agrego modificadores de velocidad para cada nivel
+				int nivel = gestor.getNivel();
+				
+				if (nivel == 1) ball.setEstrategia(new NormalMovement()); 
+				else if (nivel == 2) ball.setEstrategia(new MediumMovement());
+				else if (nivel == 3) ball.setEstrategia(new FastMovement());
+
 			}
 
 			// Verificar Game Over
 			if (gestor.getVidas() <= 0) {
 				gestor.reiniciarPartida();
-				crearBloques(2 + gestor.getNivel());
+				crearBloques();
 			}
 
 			// Verificar si se terminó el nivel
 			if (blocks.size() == 0) {
 				gestor.siguienteNivel();
-				crearBloques(2 + gestor.getNivel());
+				crearBloques();
 
-				ball = new PingBall(
-						pad.getX()+pad.getWidth()/2-5,
-						pad.getY()+pad.getHeight()+11,
-						10, 5, 7, true);
+				ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 9, 5, 7, true);
+				
+				//Agrego modificadores de velocidad para cada nivel
+				int nivel = gestor.getNivel();
+				
+				if (nivel == 1) ball.setEstrategia(new NormalMovement()); 
+				else if (nivel == 2) ball.setEstrategia(new MediumMovement());
+				else if (nivel == 3) ball.setEstrategia(new FastMovement());
+
 			}
 
 			// Dibujar bloques
