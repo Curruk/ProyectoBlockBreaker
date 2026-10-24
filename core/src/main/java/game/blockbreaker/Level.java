@@ -1,9 +1,9 @@
 
-package game.blockbreacker;
+package game.blockbreaker;
 
 import java.util.ArrayList;
 
-public abstract class Nivel {
+public abstract class Level {
 
     // Método plantilla: define los pasos para crear un nivel
     public final ArrayList<Block> crearNivel(int ancho, int alto) {

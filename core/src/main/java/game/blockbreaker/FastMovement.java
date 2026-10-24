@@ -1,7 +1,7 @@
 
-package game.blockbreacker;
+package game.blockbreaker;
 
-public class MovimientoRapido implements MovimientoPelota {
+public class FastMovement implements BallMovement {
 
     @Override
     public int calcularDesplazamiento(int velocidad) {

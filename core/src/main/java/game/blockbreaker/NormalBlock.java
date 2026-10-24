@@ -1,4 +1,4 @@
-package game.blockbreacker;
+package game.blockbreaker;
 
 public class NormalBlock extends Block {
 

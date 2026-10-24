@@ -1,4 +1,4 @@
-package game.blockbreacker;
+package game.blockbreaker;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

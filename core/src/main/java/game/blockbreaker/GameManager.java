@@ -1,5 +1,5 @@
 
-package game.blockbreacker;
+package game.blockbreaker;
 
 public class GameManager {
 

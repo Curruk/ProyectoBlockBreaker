@@ -1,4 +1,4 @@
-package game.blockbreacker;
+package game.blockbreaker;
 
 import com.badlogic.gdx.graphics.Color;
 

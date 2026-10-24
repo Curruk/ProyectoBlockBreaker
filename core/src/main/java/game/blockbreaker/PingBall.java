@@ -1,4 +1,4 @@
-package game.blockbreacker;
+package game.blockbreaker;
 
 
 import com.badlogic.gdx.Gdx;
@@ -13,7 +13,7 @@ public class PingBall implements Renderizable {
 	    private int ySpeed;
 	    private Color color = Color.WHITE;
 	    private boolean estaQuieto;
-	    private MovimientoPelota estrategia;
+	    private BallMovement estrategia;
 	    
 	    public PingBall(int x, int y, int size, int xSpeed, int ySpeed, boolean iniciaQuieto) {
 	        this.x = x;
@@ -22,7 +22,7 @@ public class PingBall implements Renderizable {
 	        this.xSpeed = xSpeed;
 	        this.ySpeed = ySpeed;
 	        estaQuieto = iniciaQuieto;
-	        estrategia = new MovimientoNormal();
+	        estrategia = new NormalMovement();
 	    }
 	    
 	    public boolean estaQuieto() {
@@ -37,7 +37,7 @@ public class PingBall implements Renderizable {
 	    }
 	    public int getY() {return y;}
 
-	    public void setEstrategia(MovimientoPelota estrategia) {
+	    public void setEstrategia(BallMovement estrategia) {
 	    	if (estrategia != null) {
 	    		this.estrategia = estrategia;
 	    	}

@@ -1,4 +1,4 @@
-package game.blockbreacker;
+package game.blockbreaker;
 
 import java.util.ArrayList;
 
@@ -41,12 +41,12 @@ public class BlockBreakerGame extends ApplicationAdapter {
 
 		public void crearBloques(int filas) {
 
-			Nivel nivelActual;
+			Level nivelActual;
 
 			if (filas < 5) {
-				nivelActual = new NivelFacil();
+				nivelActual = new EasyLevel();
 			} else {
-				nivelActual = new NivelDificil();
+				nivelActual = new HardLevel();
 			}
 
 			blocks = nivelActual.crearNivel(
@@ -76,11 +76,11 @@ public class BlockBreakerGame extends ApplicationAdapter {
 			pad.draw(shape);
 
 			if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-				ball.setEstrategia(new MovimientoNormal());
+				ball.setEstrategia(new NormalMovement());
 			}
 
 			if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
-				ball.setEstrategia(new MovimientoRapido());
+				ball.setEstrategia(new FastMovement());
 			}
 
 

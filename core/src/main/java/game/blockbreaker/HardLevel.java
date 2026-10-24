@@ -1,22 +1,21 @@
 
-package game.blockbreacker;
+package game.blockbreaker;
 
-public class NivelFacil extends Nivel {
+public class HardLevel extends Level {
 
     @Override
     protected int obtenerFilas() {
-        return 3;
+        return 5;
     }
 
     @Override
     protected Block crearBloque(int fila, int x, int y,
                                 int ancho, int alto) {
 
-        if (fila == 0) {
+        if (fila < 2) {
             return new HardBlock(x, y, ancho, alto);
         }
 
         return new NormalBlock(x, y, ancho, alto);
     }
 }
-
