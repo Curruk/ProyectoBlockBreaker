@@ -6,5 +6,4 @@ public class MediumMovement implements BallMovement {
     public float calcularDesplazamiento(float velocidad) {
         return velocidad * 1.15f;
     }
-
 }

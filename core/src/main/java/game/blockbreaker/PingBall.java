@@ -9,8 +9,8 @@ public class PingBall implements Renderizable {
 	    private int x;
 	    private int y;
 	    private int size;
-	    private int xSpeed;
-	    private int ySpeed;
+	    private float xSpeed;
+	    private float ySpeed;
 	    private Color color = Color.WHITE;
 	    private boolean estaQuieto;
 	    private BallMovement estrategia;
@@ -68,12 +68,18 @@ public class PingBall implements Renderizable {
 	    public void checkCollision(Paddle paddle) {
 	        if(collidesWith(paddle)){
 	            color = Color.GREEN;
-	            ySpeed = -ySpeed;
+	            
+	            // Modificacion para evitar bug de rebotes multiples en el paddle, sobretodo a gran velocidad
+	            if (ySpeed < 0) {
+	                this.y = paddle.getY() + paddle.getHeight() + 9;
+	                ySpeed = -ySpeed;
+	            }
 	        }
 	        else{
 	            color = Color.WHITE;
 	        }
 	    }
+	    
 	    private boolean collidesWith(Paddle pp) {
 
 	    	boolean intersectaX = (pp.getX() + pp.getWidth() >= x-size) && (pp.getX() <= x+size);

@@ -5,7 +5,7 @@ public class FastMovement implements BallMovement {
 
     @Override
     public float calcularDesplazamiento(float velocidad) {
-        return velocidad * 1.8f;
+        return velocidad * 1.25f;
     }
 
 }

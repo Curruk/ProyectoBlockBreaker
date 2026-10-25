@@ -7,7 +7,7 @@ public class HardBlock extends Block {
 	//Creamos un contador de vidas para que el bloque cumpla la funcion de tener mas de una vida
 	private int vidas;
 	
-	public HardBlock(int x, int y, int height, int width) {
+	public HardBlock(int x, int y, int width, int height) {
 		super(x, y, height, width);
 		
 		//El bloque nace con 3 vidas
