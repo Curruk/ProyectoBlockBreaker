@@ -1,6 +1,5 @@
 # UML de clases — BlockBreaker
 
-Diagrama de clases basado en el código Java del proyecto `game.blockbreaker`. Incluye las clases propias, las relaciones principales, los patrones de diseño y las clases de libGDX utilizadas directamente por el juego.
 
 ```mermaid
 classDiagram
