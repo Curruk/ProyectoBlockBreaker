@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class PingBall implements Renderizable {
-	    private int x;
-	    private int y;
+	    private float x;
+	    private float y;
 	    private int size;
 	    private float xSpeed;
 	    private float ySpeed;
@@ -15,7 +15,7 @@ public class PingBall implements Renderizable {
 	    private boolean estaQuieto;
 	    private BallMovement estrategia;
 	    
-	    public PingBall(int x, int y, int size, int xSpeed, int ySpeed, boolean iniciaQuieto) {
+	    public PingBall(float x, float y, int size, float xSpeed, float ySpeed, boolean iniciaQuieto) {
 	        this.x = x;
 	        this.y = y;
 	        this.size = size;
@@ -31,11 +31,11 @@ public class PingBall implements Renderizable {
 	    public void setEstaQuieto(boolean bb) {
 	    	estaQuieto=bb;
 	    }
-	    public void setXY(int x, int y) {
+	    public void setXY(float x, float y) {
 	    	this.x = x;
 	        this.y = y;
 	    }
-	    public int getY() {return y;}
+	    public float getY() {return y;}
 
 	    public void setEstrategia(BallMovement estrategia) {
 	    	if (estrategia != null) {

@@ -8,7 +8,7 @@ public class HardBlock extends Block {
 	private int vidas;
 	
 	public HardBlock(int x, int y, int width, int height) {
-		super(x, y, height, width);
+		super(x, y, width, height);
 		
 		//El bloque nace con 3 vidas
 		this.vidas = 3;
