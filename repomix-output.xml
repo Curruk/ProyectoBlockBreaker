@@ -1,0 +1,1039 @@
+This file is a merged representation of a subset of the codebase, containing specifically included files, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: core/src/**/*, lwjgl3/src/**/*, assets/**/*
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+assets/
+  libgdx.png
+core/
+  src/
+    main/
+      java/
+        game/
+          blockbreaker/
+            BallMovement.java
+            Block.java
+            BlockBreakerGame.java
+            EasyLevel.java
+            FastMovement.java
+            GameManager.java
+            HardBlock.java
+            HardLevel.java
+            Level.java
+            LevelConfiguration.java
+            LevelConfigurationBuilder.java
+            MediumLevel.java
+            MediumMovement.java
+            NormalBlock.java
+            NormalMovement.java
+            Paddle.java
+            PingBall.java
+            Renderizable.java
+lwjgl3/
+  src/
+    main/
+      java/
+        game/
+          blockbreaker/
+            lwjgl3/
+              Lwjgl3Launcher.java
+              StartupHelper.java
+      resources/
+        libgdx128.png
+        libgdx16.png
+        libgdx32.png
+        libgdx64.png
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="core/src/main/java/game/blockbreaker/LevelConfiguration.java">
+package game.blockbreaker;
+
+public class LevelConfiguration {
+
+    private final int filas;
+    private final int filasResistentes;
+    private final int anchoBloque;
+    private final int altoBloque;
+
+    public LevelConfiguration(int filas, int filasResistentes, int anchoBloque, int altoBloque) {
+        this.filas = filas;
+        this.filasResistentes = filasResistentes;
+        this.anchoBloque = anchoBloque;
+        this.altoBloque = altoBloque;
+    }
+
+    public int getFilas() {
+        return filas;
+    }
+
+    public int getFilasResistentes() {
+        return filasResistentes;
+    }
+
+    public int getAnchoBloque() {
+        return anchoBloque;
+    }
+
+    public int getAltoBloque() {
+        return altoBloque;
+    }
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/LevelConfigurationBuilder.java">
+package game.blockbreaker;
+
+public class LevelConfigurationBuilder {
+
+    private int filas = 3;
+    private int filasResistentes = 1;
+    private int anchoBloque = 70;
+    private int altoBloque = 26;
+
+    public LevelConfigurationBuilder filas(int filas) {
+        this.filas = filas;
+        return this;
+    }
+
+    public LevelConfigurationBuilder filasResistentes(int filasResistentes) {
+        this.filasResistentes = filasResistentes;
+        return this;
+    }
+
+    public LevelConfigurationBuilder anchoBloque(int anchoBloque) {
+        this.anchoBloque = anchoBloque;
+        return this;
+    }
+
+    public LevelConfigurationBuilder altoBloque(int altoBloque) {
+        this.altoBloque = altoBloque;
+        return this;
+    }
+
+    public LevelConfiguration build() {
+        if (filas <= 0 || anchoBloque <= 0 || altoBloque <= 0 ||
+            filasResistentes < 0 || filasResistentes > filas) {
+            throw new IllegalArgumentException(
+                "Configuracion de nivel invalida"
+            );
+        }
+
+        return new LevelConfiguration(
+            filas, filasResistentes, anchoBloque, altoBloque
+        );
+    }
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/MediumLevel.java">
+package game.blockbreaker;
+
+public class MediumLevel extends Level {
+    
+	@Override
+    protected Block crearBloque(int fila, int x, int y, int ancho, int alto) {
+		
+		//nivel con filas intercaldas
+		if (fila % 2 == 0) {
+            return new HardBlock(x, y, ancho, alto);
+        } else {
+            return new NormalBlock(x, y, ancho, alto);
+        }
+    }
+}
+</file>
+
+<file path="lwjgl3/src/main/java/game/blockbreaker/lwjgl3/Lwjgl3Launcher.java">
+package game.blockbreaker.lwjgl3;
+
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+
+import game.blockbreaker.BlockBreakerGame;
+
+/** Launches the desktop (LWJGL3) application. */
+public class Lwjgl3Launcher {
+    public static void main(String[] args) {
+        if (StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
+        createApplication();
+    }
+
+    private static Lwjgl3Application createApplication() {
+        return new Lwjgl3Application(new BlockBreakerGame(), getDefaultConfiguration());
+    }
+
+    private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
+        Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
+        configuration.setTitle("ProyectoBlockBreaker");
+        //// Vsync limits the frames per second to what your hardware can display, and helps eliminate
+        //// screen tearing. This setting doesn't always work on Linux, so the line after is a safeguard.
+        configuration.useVsync(true);
+        //// Limits FPS to the refresh rate of the currently active monitor, plus 1 to try to match fractional
+        //// refresh rates. The Vsync setting above should limit the actual FPS to match the monitor.
+        configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1);
+        //// If you remove the above line and set Vsync to false, you can get unlimited FPS, which can be
+        //// useful for testing performance, but can also be very stressful to some hardware.
+        //// You may also need to configure GPU drivers to fully disable Vsync; this can cause screen tearing.
+        configuration.setWindowedMode(640, 480);
+        //// You can change these files; they are in lwjgl3/src/main/resources/ .
+        configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
+        return configuration;
+    }
+}
+</file>
+
+<file path="lwjgl3/src/main/java/game/blockbreaker/lwjgl3/StartupHelper.java">
+/*
+ * Copyright 2020 damios
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+//Note, the above license and copyright applies to this file only.
+
+package game.blockbreaker.lwjgl3;
+
+import org.lwjgl.system.macosx.LibC;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
+
+/**
+ * Adds some utilities to ensure that the JVM was started with the
+ * {@code -XstartOnFirstThread} argument, which is required on macOS for LWJGL 3
+ * to function. Also helps on Windows when users have names with characters from
+ * outside the Latin alphabet, a common cause of startup crashes.
+ * <br>
+ * <a href="https://jvm-gaming.org/t/starting-jvm-on-mac-with-xstartonfirstthread-programmatically/57547">Based on this java-gaming.org post by kappa</a>
+ * @author damios
+ */
+public class StartupHelper {
+
+    private static final String JVM_RESTARTED_ARG = "jvmIsRestarted";
+
+    private StartupHelper() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Starts a new JVM if the application was started on macOS without the
+     * {@code -XstartOnFirstThread} argument. This also includes some code for
+     * Windows, for the case where the user's home directory includes certain
+     * non-Latin-alphabet characters (without this code, most LWJGL3 apps fail
+     * immediately for those users). Returns whether a new JVM was started and
+     * thus no code should be executed.
+     * <p>
+     * <u>Usage:</u>
+     *
+     * <pre><code>
+     * public static void main(String... args) {
+     * 	if (StartupHelper.startNewJvmIfRequired(true)) return; // This handles macOS support and helps on Windows.
+     * 	// after this is the actual main method code
+     * }
+     * </code></pre>
+     *
+     * @param redirectOutput
+     *            whether the output of the new JVM should be rerouted to the
+     *            old JVM, so it can be accessed in the same place; keeps the
+     *            old JVM running if enabled
+     * @return whether a new JVM was started and thus no code should be executed
+     *         in this one
+     */
+    public static boolean startNewJvmIfRequired(boolean redirectOutput) {
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (!osName.contains("mac")) {
+            if (osName.contains("windows")) {
+// Here, we are trying to work around an issue with how LWJGL3 loads its extracted .dll files.
+// By default, LWJGL3 extracts to the directory specified by "java.io.tmpdir", which is usually the user's home.
+// If the user's name has non-ASCII (or some non-alphanumeric) characters in it, that would fail.
+// By extracting to the relevant "ProgramData" folder, which is usually "C:\ProgramData", we avoid this.
+                System.setProperty("java.io.tmpdir", System.getenv("ProgramData") + "/libGDX-temp");
+            }
+            return false;
+        }
+
+        // There is no need for -XstartOnFirstThread on Graal native image
+        if (!System.getProperty("org.graalvm.nativeimage.imagecode", "").isEmpty()) {
+            return false;
+        }
+
+        long pid = LibC.getpid();
+
+        // check whether -XstartOnFirstThread is enabled
+        if ("1".equals(System.getenv("JAVA_STARTED_ON_FIRST_THREAD_" + pid))) {
+            return false;
+        }
+
+        // check whether the JVM was previously restarted
+        // avoids looping, but most certainly leads to a crash
+        if ("true".equals(System.getProperty(JVM_RESTARTED_ARG))) {
+            System.err.println(
+                    "There was a problem evaluating whether the JVM was started with the -XstartOnFirstThread argument.");
+            return false;
+        }
+
+        // Restart the JVM with -XstartOnFirstThread
+        ArrayList<String> jvmArgs = new ArrayList<>();
+        String separator = System.getProperty("file.separator");
+        // The following line is used assuming you target Java 8, the minimum for LWJGL3.
+        String javaExecPath = System.getProperty("java.home") + separator + "bin" + separator + "java";
+        // If targeting Java 9 or higher, you could use the following instead of the above line:
+        //String javaExecPath = ProcessHandle.current().info().command().orElseThrow();
+
+        if (!(new File(javaExecPath)).exists()) {
+            System.err.println(
+                    "A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the -XstartOnFirstThread argument manually!");
+            return false;
+        }
+
+        jvmArgs.add(javaExecPath);
+        jvmArgs.add("-XstartOnFirstThread");
+        jvmArgs.add("-D" + JVM_RESTARTED_ARG + "=true");
+        jvmArgs.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
+        jvmArgs.add("-cp");
+        jvmArgs.add(System.getProperty("java.class.path"));
+        String mainClass = System.getenv("JAVA_MAIN_CLASS_" + pid);
+        if (mainClass == null) {
+            StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+            if (trace.length > 0) {
+                mainClass = trace[trace.length - 1].getClassName();
+            } else {
+                System.err.println("The main class could not be determined.");
+                return false;
+            }
+        }
+        jvmArgs.add(mainClass);
+
+        try {
+            if (!redirectOutput) {
+                ProcessBuilder processBuilder = new ProcessBuilder(jvmArgs);
+                processBuilder.start();
+            } else {
+                Process process = (new ProcessBuilder(jvmArgs))
+                        .redirectErrorStream(true).start();
+                BufferedReader processOutput = new BufferedReader(
+                        new InputStreamReader(process.getInputStream()));
+                String line;
+
+                while ((line = processOutput.readLine()) != null) {
+                    System.out.println(line);
+                }
+
+                process.waitFor();
+            }
+        } catch (Exception e) {
+            System.err.println("There was a problem restarting the JVM");
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    /**
+     * Starts a new JVM if the application was started on macOS without the
+     * {@code -XstartOnFirstThread} argument. Returns whether a new JVM was
+     * started and thus no code should be executed. Redirects the output of the
+     * new JVM to the old one.
+     * <p>
+     * <u>Usage:</u>
+     *
+     * <pre>
+     * public static void main(String... args) {
+     * 	if (StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
+     * 	// the actual main method code
+     * }
+     * </pre>
+     *
+     * @return whether a new JVM was started and thus no code should be executed
+     *         in this one
+     */
+    public static boolean startNewJvmIfRequired() {
+        return startNewJvmIfRequired(true);
+    }
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/Block.java">
+package game.blockbreaker;
+
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+import java.util.Random;
+
+import com.badlogic.gdx.graphics.Color;
+
+public abstract class Block implements Renderizable {
+    private int x,y,width,height;
+    private Color cc;
+    private boolean destroyed;
+    
+    public  Block(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        destroyed = false;
+        Random r = new Random(x + y);
+        
+       cc = new Color(0.1f+r.nextFloat(), r.nextFloat(), r.nextFloat(), 10);
+  
+    }
+    
+    @Override
+    public void draw(ShapeRenderer shape){
+    	shape.setColor(cc);
+        shape.rect(x, y, width, height);
+    }
+    
+    //método abstracto
+    public abstract void recibirGolpe();
+    
+    //Setters
+    public void setColor(Color color) {
+    	cc = color;
+    }
+    
+    public void setDestroyed(boolean destroyed) {
+    	this.destroyed = destroyed;
+    }
+    
+    //Getters
+    public int getX() { return x;}
+    
+    public int getY() { return y;}
+    
+    public int getWidth() { return width;}
+    
+    public int getHeight() { return height;}
+    
+    public boolean isDestroyed() { return destroyed;}
+    
+    public Color getColor() { return cc;}
+    
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/MediumMovement.java">
+package game.blockbreaker;
+
+public class MediumMovement implements BallMovement {
+
+    @Override
+    public float calcularDesplazamiento(float velocidad) {
+        return velocidad * 1.15f;
+    }
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/NormalBlock.java">
+package game.blockbreaker;
+
+public class NormalBlock extends Block {
+
+	public NormalBlock(int x, int y, int width, int height) {
+		super(x, y, width, height);
+	}
+	
+	@Override
+	public void recibirGolpe() {
+		this.setDestroyed(true);	
+	}
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/Paddle.java">
+package game.blockbreaker;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+public class Paddle implements Renderizable {
+    private int x = 20;
+    private int y = 20;
+    private int width = 100;
+    private int height = 10;
+    
+    public Paddle(int x, int y, int ancho, int alto) {
+    	this.x = x;
+    	this.y= y;
+    	width = ancho;
+    	height = alto;
+    }
+     
+    public int getX() {return x;}
+	public int getY() {return y;}
+	public int getWidth() {return width;}
+	public int getHeight() {return height;}
+
+	@Override
+	public void draw(ShapeRenderer shape){
+        shape.setColor(Color.BLUE);
+        int x2 = x; //= Gdx.input.getX();
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) x2 =x-15;
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) x2=x+15; 
+       // y = Gdx.graphics.getHeight() - Gdx.input.getY(); 
+        if (x2 > 0 && x2+width < Gdx.graphics.getWidth()) {
+            x = x2;
+        }
+        shape.rect(x, y, width, height);
+    }
+
+    
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/Renderizable.java">
+package game.blockbreaker;
+
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+//Creamos está interfaz para poder implementarla en las clases que se renderizan
+public interface Renderizable {
+	
+	void draw(ShapeRenderer shape);
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/BallMovement.java">
+package game.blockbreaker;
+
+public interface BallMovement {
+	float calcularDesplazamiento(float velocidad);
+
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/EasyLevel.java">
+package game.blockbreaker;
+
+public class EasyLevel extends Level {
+
+	@Override
+	protected Block crearBloque(int fila, int x, int y, int ancho, int alto) {
+
+		// En este nivel hacemos todos los blockes normales
+		return new NormalBlock(x, y, ancho, alto);
+	}
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/FastMovement.java">
+package game.blockbreaker;
+
+public class FastMovement implements BallMovement {
+
+    @Override
+    public float calcularDesplazamiento(float velocidad) {
+        return velocidad * 1.25f;
+    }
+
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/GameManager.java">
+package game.blockbreaker;
+
+public class GameManager {
+
+    // Única instancia del administrador
+    private static final GameManager instancia = new GameManager();
+
+    // Estado de la partida
+    private int vidas;
+    private int puntaje;
+    private int nivel;
+
+    // Constructor privado
+    private GameManager() {
+        vidas = 5;
+        puntaje = 0;
+        nivel = 1;
+    }
+
+    // Acceso a la única instancia
+    public static GameManager getInstancia() {
+        return instancia;
+    }
+
+    public int getVidas() {
+        return vidas;
+    }
+
+    public int getPuntaje() {
+        return puntaje;
+    }
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void perderVida() {
+        vidas--;
+    }
+
+    public void sumarPunto() {
+        puntaje++;
+    }
+
+    public void siguienteNivel() {
+        nivel++;
+    }
+
+    public void reiniciarPartida() {
+        vidas = 100;
+        puntaje = 0;
+        nivel = 1;
+    }
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/HardBlock.java">
+package game.blockbreaker;
+
+import com.badlogic.gdx.graphics.Color;
+
+public class HardBlock extends Block {
+	
+	//Creamos un contador de vidas para que el bloque cumpla la funcion de tener mas de una vida
+	private int vidas;
+	
+	public HardBlock(int x, int y, int width, int height) {
+		super(x, y, width, height);
+		
+		//El bloque nace con 3 vidas
+		this.vidas = 3;
+		
+		//El bloque comienza con color rojo
+		this.setColor(Color.RED);
+	}
+	
+	@Override
+	public void recibirGolpe() {
+		//Al recibir un golpe restamos una vida
+		vidas--;
+		
+		//Cambiamos de color el bloque a medida que va perdiendo vidas
+		if (vidas == 2) { this.setColor(Color.ORANGE); }
+		else if (vidas == 1) { this.setColor(Color.YELLOW); }
+		else if (vidas <= 0) {this.setDestroyed(true); }
+	}
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/HardLevel.java">
+package game.blockbreaker;
+
+public class HardLevel extends Level {
+
+    @Override
+    protected Block crearBloque(int fila, int x, int y, int ancho, int alto) {
+    	//Full hardblocks
+    	return new HardBlock(x, y, ancho, alto);
+    }
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/NormalMovement.java">
+package game.blockbreaker;
+
+public class NormalMovement implements BallMovement {
+
+    @Override
+    public float calcularDesplazamiento(float velocidad) {
+        return velocidad;
+    }
+
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/PingBall.java">
+package game.blockbreaker;
+
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+public class PingBall implements Renderizable {
+	    private float x;
+	    private float y;
+	    private int size;
+	    private float xSpeed;
+	    private float ySpeed;
+	    private Color color = Color.WHITE;
+	    private boolean estaQuieto;
+	    private BallMovement estrategia;
+	    
+	    public PingBall(float x, float y, int size, float xSpeed, float ySpeed, boolean iniciaQuieto) {
+	        this.x = x;
+	        this.y = y;
+	        this.size = size;
+	        this.xSpeed = xSpeed;
+	        this.ySpeed = ySpeed;
+	        estaQuieto = iniciaQuieto;
+	        estrategia = new NormalMovement();
+	    }
+	    
+	    public boolean estaQuieto() {
+	    	return estaQuieto;
+	    }
+	    public void setEstaQuieto(boolean bb) {
+	    	estaQuieto=bb;
+	    }
+	    public void setXY(float x, float y) {
+	    	this.x = x;
+	        this.y = y;
+	    }
+	    public float getY() {return y;}
+
+	    public void setEstrategia(BallMovement estrategia) {
+	    	if (estrategia != null) {
+	    		this.estrategia = estrategia;
+	    	}
+	    }
+
+	    
+	    @Override
+	    public void draw(ShapeRenderer shape){
+	        shape.setColor(color);
+	        shape.circle(x, y, size);
+	    }
+	    
+	    public void update() {
+	        if (estaQuieto) return;
+
+	        x += estrategia.calcularDesplazamiento(xSpeed);
+	        y += estrategia.calcularDesplazamiento(ySpeed);
+
+	        if (x-size < 0 || x+size > Gdx.graphics.getWidth()) {
+	            xSpeed = -xSpeed;
+	        }
+
+	        if (y+size > Gdx.graphics.getHeight()) {
+	            ySpeed = -ySpeed;
+	        }
+	    }
+	    
+	    public void checkCollision(Paddle paddle) {
+	        if(collidesWith(paddle)){
+	            color = Color.GREEN;
+	            
+	            // Modificacion para evitar bug de rebotes multiples en el paddle, sobretodo a gran velocidad
+	            if (ySpeed < 0) {
+	                this.y = paddle.getY() + paddle.getHeight() + 9;
+	                ySpeed = -ySpeed;
+	            }
+	        }
+	        else{
+	            color = Color.WHITE;
+	        }
+	    }
+	    
+	    private boolean collidesWith(Paddle pp) {
+
+	    	boolean intersectaX = (pp.getX() + pp.getWidth() >= x-size) && (pp.getX() <= x+size);
+	        boolean intersectaY = (pp.getY() + pp.getHeight() >= y-size) && (pp.getY() <= y+size);		
+	    	return intersectaX && intersectaY;
+	    }
+	    
+	    public void checkCollision(Block block) {
+	        if(collidesWith(block)){
+	            ySpeed = - ySpeed;
+	            
+	            //Se cambió el comportamiento del gope por el método abtracto recibirGolpe, para generar distintos comportamientos
+	            block.recibirGolpe();
+	        }
+	    }
+	    private boolean collidesWith(Block bb) {
+
+	    	//Se modificó el acceso de datos a través de los gets correspondientes
+	    	boolean intersectaX = (bb.getX() + bb.getWidth() >= x-size) && (bb.getX() <= x+size);
+	        boolean intersectaY = (bb.getY() + bb.getHeight() >= y-size) && (bb.getY() <= y+size);		
+	    	return intersectaX && intersectaY;
+	    }
+	    
+	}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/BlockBreakerGame.java">
+package game.blockbreaker;
+
+import java.util.ArrayList;
+
+
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+
+public class BlockBreakerGame extends ApplicationAdapter {
+    private OrthographicCamera camera;
+	private SpriteBatch batch;	   
+	private BitmapFont font;
+	private ShapeRenderer shape;
+	private PingBall ball;
+	private Paddle pad;
+	private ArrayList<Block> blocks = new ArrayList<>();
+	private GameManager gestor = GameManager.getInstancia();
+    
+	@Override
+	public void create () {	
+		camera = new OrthographicCamera();
+	    camera.setToOrtho(false, 800, 480);
+	    batch = new SpriteBatch();
+	    font = new BitmapFont();
+	    font.getData().setScale(3, 2);
+	    gestor.reiniciarPartida();
+	    crearBloques();
+		
+	    shape = new ShapeRenderer();
+	    ball = new PingBall(Gdx.graphics.getWidth()/2-10, 41, 9, 5, 7, true);
+	    pad = new Paddle(Gdx.graphics.getWidth()/2-50,40,100,10);
+	       
+	}
+
+	public void crearBloques() {
+
+		Level nivelActual = null;
+		int nivel = gestor.getNivel();
+		
+		LevelConfigurationBuilder builder = new LevelConfigurationBuilder().anchoBloque(70).altoBloque(15);
+
+		if (nivel == 1) {
+	        nivelActual = new EasyLevel();
+	        builder.filas(3).filasResistentes(0);
+	    } else if (nivel == 2) {
+	        nivelActual = new MediumLevel();
+	        builder.filas(4).filasResistentes(1);
+	    } else {
+	        nivelActual = new HardLevel();
+	        builder.filas(6).filasResistentes(6);
+	    }
+
+		blocks = nivelActual.crearNivel(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), builder.build());
+	}
+	
+	
+	//Metodo para apical la estrategia sin repetir codigo
+	private void aplicarVelocidadPorNivel() {
+        int nivel = gestor.getNivel();
+        
+        //Aplicamos las respectivas velocidades segun el nivel
+        if (nivel == 1) {
+            ball.setEstrategia(new NormalMovement());
+        } else if (nivel == 2) {
+            ball.setEstrategia(new MediumMovement()); 
+        } else {
+            ball.setEstrategia(new FastMovement());   
+        }
+    }
+
+	public void dibujaTextos() {
+	//actualizar matrices de la cámara
+	camera.update();
+	//actualizar 
+	batch.setProjectionMatrix(camera.combined);
+	batch.begin();
+	//dibujar textos
+	font.draw(batch, "Puntos: " + gestor.getPuntaje(), 10, 25);
+	font.draw(batch, "Vidas: " + gestor.getVidas(), Gdx.graphics.getWidth()-180, 25);
+	
+	batch.end();
+	}	
+
+
+	@Override
+	public void render() {
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		shape.begin(ShapeRenderer.ShapeType.Filled);
+		pad.draw(shape);
+
+		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+			ball.setEstrategia(new NormalMovement());
+		}
+
+		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+			ball.setEstrategia(new FastMovement());
+		}
+
+
+		// Monitorear inicio del juego
+		if (ball.estaQuieto()) {
+			ball.setXY(pad.getX()+pad.getWidth()/2-5,
+               pad.getY()+pad.getHeight()+11);
+
+			if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+				ball.setEstaQuieto(false);
+			} else {
+				ball.update();
+			}
+
+		// Verificar si la pelota cayó
+		if (ball.getY() < 0) {
+			gestor.perderVida();
+			ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 9, 5, 7, true);
+			
+			//aplicamos la velocidad por nivel
+			aplicarVelocidadPorNivel();
+		}
+			
+		// Verificar Game Over
+		if (gestor.getVidas() <= 0) {
+			gestor.reiniciarPartida();
+			crearBloques();
+			
+			ball = new PingBall(pad.getX() + pad.getWidth() / 2 - 5, pad.getY() + pad.getHeight() + 11, 9, 5, 7, true);
+			// Resetea la velocidad de vuelta a Nivel 1
+			aplicarVelocidadPorNivel(); 
+            
+		}
+
+		// Verificar si se terminó el nivel
+		if (blocks.size() == 0) {
+			gestor.siguienteNivel();
+			crearBloques();
+			ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 9, 5, 7, true);
+			
+			//aplicamos la velocidad por nivel
+			aplicarVelocidadPorNivel();
+		}
+
+		// Dibujar bloques
+		for (Block b : blocks) {
+			b.draw(shape);
+			ball.checkCollision(b);
+		}
+
+		// Actualizar estado de los bloques
+		for (int i = 0; i < blocks.size(); i++) {
+			Block b = blocks.get(i);
+
+			if (b.isDestroyed()) {
+				gestor.sumarPunto();
+				blocks.remove(b);
+				i--;
+			}
+		}
+
+		ball.checkCollision(pad);
+		ball.draw(shape);
+
+		shape.end();
+
+		dibujaTextos();
+	}
+
+	
+	@Override
+	public void dispose () {
+		shape.dispose();
+	    batch.dispose();
+	    font.dispose();
+	}
+}
+</file>
+
+<file path="core/src/main/java/game/blockbreaker/Level.java">
+package game.blockbreaker;
+
+import java.util.ArrayList;
+
+public abstract class Level {
+
+	//TM
+    public final ArrayList<Block> crearNivel( int ancho, int alto, LevelConfiguration config) {
+
+        ArrayList<Block> bloques = new ArrayList<>();
+
+        int anchoBloque = config.getAnchoBloque();
+        int altoBloque = config.getAltoBloque();
+        int filas = config.getFilas();
+        
+        int y = alto - 40;
+
+        for (int fila = 0; fila < filas; fila++) {
+            y -= altoBloque + 10;
+
+            for (int x = 5; x < ancho; x += anchoBloque + 10) {
+
+            	Block bloque;
+
+            	// Rango para HardBlocks
+            	if (fila < config.getFilasResistentes()) { 
+            		bloque = new HardBlock(x, y, anchoBloque, altoBloque);
+            	} else {
+            	    bloque = crearBloque(fila, x, y, anchoBloque, altoBloque);
+            	}
+
+                bloques.add(bloque);
+            }
+        }
+
+        return bloques;
+    }
+
+    protected abstract Block crearBloque(int fila, int x, int y, int ancho, int alto);
+}
+</file>
+
+</files>

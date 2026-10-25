@@ -42,37 +42,22 @@ public class BlockBreakerGame extends ApplicationAdapter {
 	public void crearBloques() {
 
 		Level nivelActual = null;
-		LevelConfiguration config = null;
 		int nivel = gestor.getNivel();
+		
+		LevelConfigurationBuilder builder = new LevelConfigurationBuilder().anchoBloque(70).altoBloque(15);
 
 		if (nivel == 1) {
-			nivelActual = new EasyLevel();
-			config = new LevelConfigurationBuilder()
-					.filas(3)
-					.filasResistentes(0)
-					.anchoBloque(70)
-					.altoBloque(15)
-					.build();
-		} else if (nivel == 2) {
-			nivelActual = new MediumLevel();
-			config = new LevelConfigurationBuilder()
-					.filas(4)
-					.filasResistentes(1)
-					.anchoBloque(70)
-					.altoBloque(15)
-					.build();
-		//Para los siguientes niveles
-		} else {
-			nivelActual = new HardLevel();
-			config = new LevelConfigurationBuilder()			
-					.filas(6)
-					.filasResistentes(2)
-					.anchoBloque(70)
-					.altoBloque(15)
-					.build();
-		}
+	        nivelActual = new EasyLevel();
+	        builder.filas(3).filasResistentes(0);
+	    } else if (nivel == 2) {
+	        nivelActual = new MediumLevel();
+	        builder.filas(4).filasResistentes(1);
+	    } else {
+	        nivelActual = new HardLevel();
+	        builder.filas(6).filasResistentes(6);
+	    }
 
-		blocks = nivelActual.crearNivel(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), config);
+		blocks = nivelActual.crearNivel(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), builder.build());
 	}
 	
 	
