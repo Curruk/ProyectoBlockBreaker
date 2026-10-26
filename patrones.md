@@ -2,10 +2,7 @@
 
 ## Singleton
 
-Problema: Necesitábamos controlar las vidas, el puntaje y el nivel del jugador sin crear varios administradores con información diferente.
-Contexto: Durante la partida, BlockBreakerGame consulta y actualiza estos datos cuando el jugador pierde una vida, destruye bloques o avanza de nivel.
-Solución: Implementamos Singleton mediante GameManager. Su constructor es privado y getInstancia() permite acceder a una única instancia que administra el estado de la partida.Clases involucradas: GameManager y BlockBreakerGame.
-
+Se aplicó el patrón de diseño creacional Singleton para centralizar el estado de la partida en una única instancia inmutable. Este patrón garantiza que toda la arquitectura del juego consuma la misma referencia de memoria, manteniendo la consistencia de los puntos y las vidas independientemente de los eventos que ocurran en el renderizado.
 
 ```mermaid
 classDiagram
@@ -40,9 +37,7 @@ BlockBreakerGame --> GameManager : getInstancia()
 
 ## Strategy
 
-Problema: Queríamos permitir distintos movimientos de la pelota sin tener que cambiar su lógica cada vez que modificáramos la velocidad.
-Contexto: En BlockBreaker, el jugador puede seleccionar el movimiento normal con la tecla 1 o el rápido con la tecla 2.
-Solución: Creamos la interfaz BallMovement y dos implementaciones: NormalMovement y FastMovement. PingBall utiliza una estrategia para calcular su desplazamiento y puede cambiarla mediante setEstrategia().Clases involucradas: BallMovement, NormalMovement, FastMovement, PingBall y BlockBreakerGame.
+Se requería gestionar un incremento progresivo de dificultad sin contaminar la clase principal con múltiples sentencias condicionales. Para resolverlo se encapsuló el algoritmo de movimiento utilizando el patrón Strategy,. La pelota PingBall no calcula su propia aceleración, sino que delega este cálculo a una interfaz inyectable. Al cambiar de nivel el gestor central inyecta una nueva estrategia matemática concreta, alterando el comportamiento físico de la pelota en tiempo de ejecución de manera limpia.
 
 ```mermaid
 classDiagram
@@ -89,9 +84,7 @@ BlockBreakerGame --> PingBall : cambia estrategia
 
 ## Template Method
 
-Problema: Necesitábamos generar niveles con diferentes dificultades sin repetir el algoritmo de creación de bloques.
-Contexto: El juego tiene niveles fáciles y difíciles. Ambos utilizan el mismo procedimiento para distribuir los bloques, pero pueden personalizar sus características.
-Solución: Creamos la clase abstracta Level, que define el procedimiento mediante crearNivel(). Las clases EasyLevel y HardLevel heredan de ella y personalizan la creación de bloques normales, incluyendo sus colores.Clases involucradas: Level, EasyLevel, HardLevel, Block, NormalBlock y HardBlock.
+La creación de los distintos niveles repetía el mismo procedimiento, variando principalmente el tipo de bloque generado. El juego posee EasyLevel, MediumLevel y HardLevel, los cuales comparten la misma estructura de generación pero tienen comportamientos distintos. Como solución se implementó Level como clase abstracta. Su método final crearNivel() define el algoritmo general, mientras crearBloque() es implementado por cada subclase según la dificultad.
 
 
 
@@ -149,9 +142,7 @@ Block <|-- HardBlock
 
 ## Builder
 
-Problema: Necesitábamos configurar diferentes niveles sin escribir directamente todos sus parámetros cada vez que los creábamos.
-Contexto: Cada nivel de BlockBreaker puede tener distinta cantidad de filas, filas resistentes y dimensiones de los bloques.
-Solución: Implementamos ConfiguracionNivelBuilder, que permite definir estas características paso a paso. El método build() valida los valores y construye un objeto ConfiguracionNivel, que después utiliza Level para generar los bloques.Clases involucradas: ConfiguracionNivelBuilder, ConfiguracionNivel, Level y BlockBreakerGame.
+Los niveles necesitan varios parámetros de configuración, lo que hacía poco clara su construcción directa. Según el nivel se modifican la cantidad de filas, filas resistentes y dimensiones de los bloques. Como solución se creó LevelConfigurationBuilder, que permite configurar estos valores paso a paso y mediante build() genera un LevelConfiguration validado, utilizado posteriormente por Level.L
 
 ```mermaid
 classDiagram
