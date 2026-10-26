@@ -48,7 +48,7 @@ public class GameManager {
     }
 
     public void reiniciarPartida() {
-        vidas = 100;
+        vidas = 5;
         puntaje = 0;
         nivel = 1;
     }
