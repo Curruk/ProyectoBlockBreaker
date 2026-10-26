@@ -6,31 +6,36 @@ Problema: Necesitábamos controlar las vidas, el puntaje y el nivel del jugador 
 Contexto: Durante la partida, BlockBreakerGame consulta y actualiza estos datos cuando el jugador pierde una vida, destruye bloques o avanza de nivel.
 Solución: Implementamos Singleton mediante GameManager. Su constructor es privado y getInstancia() permite acceder a una única instancia que administra el estado de la partida.Clases involucradas: GameManager y BlockBreakerGame.
 
+
 ```mermaid
 classDiagram
-    class GameManager {
-        -static GameManager instancia
-        -int vidas
-        -int puntaje
-        -int nivel
-        -GameManager()
-        +getInstancia() GameManager
-        +getVidas() int
-        +getPuntaje() int
-        +getNivel() int
-        +perderVida() void
-        +sumarPunto() void
-        +siguienteNivel() void
-        +reiniciarPartida() void
-    }
+direction LR
 
-    class BlockBreakerGame {
-        -GameManager gestor
-        +create() void
-        +render() void
-    }
+class BlockBreakerGame {
+    -GameManager gestor
+    +create() void
+    +render() void
+    +crearBloques() void
+}
 
-    BlockBreakerGame --> GameManager : utiliza instancia unica
+class GameManager {
+    <<Singleton>>
+    -GameManager instancia
+    -int vidas
+    -int puntaje
+    -int nivel
+    -GameManager()
+    +getInstancia() GameManager
+    +getVidas() int
+    +getPuntaje() int
+    +getNivel() int
+    +perderVida() void
+    +sumarPunto() void
+    +siguienteNivel() void
+    +reiniciarPartida() void
+}
+
+BlockBreakerGame --> GameManager : getInstancia()
 ```
 
 ## Strategy
@@ -41,38 +46,45 @@ Solución: Creamos la interfaz BallMovement y dos implementaciones: NormalMoveme
 
 ```mermaid
 classDiagram
-    class BallMovement {
-        <<interface>>
-        +calcularDesplazamiento(int velocidad) int
-    }
+direction TB
 
-    class NormalMovement {
-        +calcularDesplazamiento(int velocidad) int
-    }
+class BallMovement {
+    <<interface>>
+    +calcularDesplazamiento(float velocidad) float
+}
 
-    class FastMovement {
-        +calcularDesplazamiento(int velocidad) int
-    }
+class NormalMovement {
+    +calcularDesplazamiento(float velocidad) float
+}
 
-    class PingBall {
-        -int x
-        -int y
-        -int xSpeed
-        -int ySpeed
-        -BallMovement estrategia
-        +setEstrategia(BallMovement estrategia) void
-        +update() void
-    }
+class MediumMovement {
+    +calcularDesplazamiento(float velocidad) float
+}
 
-    class BlockBreakerGame {
-        +render() void
-    }
+class FastMovement {
+    +calcularDesplazamiento(float velocidad) float
+}
 
-    BallMovement <|.. NormalMovement
-    BallMovement <|.. FastMovement
+class PingBall {
+    -float xSpeed
+    -float ySpeed
+    -BallMovement estrategia
+    +setEstrategia(BallMovement estrategia) void
+    +update() void
+}
 
-    PingBall --> BallMovement : utiliza estrategia
-    BlockBreakerGame --> PingBall : cambia estrategia
+class BlockBreakerGame {
+    -PingBall ball
+    -aplicarVelocidadPorNivel() void
+    +render() void
+}
+
+BallMovement <|.. NormalMovement
+BallMovement <|.. MediumMovement
+BallMovement <|.. FastMovement
+
+PingBall --> BallMovement : estrategia actual
+BlockBreakerGame --> PingBall : cambia estrategia
 ```
 
 ## Template Method
@@ -81,57 +93,58 @@ Problema: Necesitábamos generar niveles con diferentes dificultades sin repetir
 Contexto: El juego tiene niveles fáciles y difíciles. Ambos utilizan el mismo procedimiento para distribuir los bloques, pero pueden personalizar sus características.
 Solución: Creamos la clase abstracta Level, que define el procedimiento mediante crearNivel(). Las clases EasyLevel y HardLevel heredan de ella y personalizan la creación de bloques normales, incluyendo sus colores.Clases involucradas: Level, EasyLevel, HardLevel, Block, NormalBlock y HardBlock.
 
+
+
 ```mermaid
 classDiagram
-    class Level {
-        <<abstract>>
-        +crearNivel(int ancho, int alto) ArrayList~Block~
-        +crearNivel(int ancho, int alto, ConfiguracionNivel config) ArrayList~Block~
-        #obtenerFilas() int
-        #crearBloque(int fila, int x, int y, int ancho, int alto) Block
-    }
+direction TB
 
-    class EasyLevel {
-        #obtenerFilas() int
-        #crearBloque(int fila, int x, int y, int ancho, int alto) Block
-    }
+class Level {
+    <<abstract>>
+    +crearNivel(int ancho, int alto, LevelConfiguration config) ArrayList~Block~
+    #crearBloque(int fila, int x, int y, int ancho, int alto) Block
+}
 
-    class HardLevel {
-        #obtenerFilas() int
-        #crearBloque(int fila, int x, int y, int ancho, int alto) Block
-    }
+class EasyLevel {
+    #crearBloque(int fila, int x, int y, int ancho, int alto) Block
+}
 
-    class Block {
-        <<abstract>>
-        +recibirGolpe() void
-    }
+class MediumLevel {
+    #crearBloque(int fila, int x, int y, int ancho, int alto) Block
+}
 
-    class NormalBlock {
-        +recibirGolpe() void
-    }
+class HardLevel {
+    #crearBloque(int fila, int x, int y, int ancho, int alto) Block
+}
 
-    class HardBlock {
-        -int vidas
-        +recibirGolpe() void
-    }
+class LevelConfiguration {
+    -int filas
+    -int filasResistentes
+    -int anchoBloque
+    -int altoBloque
+}
 
-    class ConfiguracionNivel {
-        -int filas
-        -int filasResistentes
-        -int anchoBloque
-        -int altoBloque
-    }
+class Block {
+    <<abstract>>
+}
 
-    Level <|-- EasyLevel
-    Level <|-- HardLevel
+class NormalBlock
+class HardBlock
 
-    Block <|-- NormalBlock
-    Block <|-- HardBlock
+Level <|-- EasyLevel
+Level <|-- MediumLevel
+Level <|-- HardLevel
 
-    Level ..> ConfiguracionNivel : utiliza
-    Level ..> Block : crea bloques
-    EasyLevel ..> NormalBlock : crea
-    HardLevel ..> NormalBlock : crea
+Level --> LevelConfiguration : utiliza
+Level ..> Block : crea
+
+EasyLevel ..> NormalBlock : crea
+MediumLevel ..> NormalBlock : crea
+MediumLevel ..> HardBlock : crea
+HardLevel ..> HardBlock : crea
+
+Block <|-- NormalBlock
+Block <|-- HardBlock
 ```
 
 ## Builder
@@ -142,41 +155,44 @@ Solución: Implementamos ConfiguracionNivelBuilder, que permite definir estas ca
 
 ```mermaid
 classDiagram
-    class ConfiguracionNivelBuilder {
-        <<Builder>>
-        -int filas
-        -int filasResistentes
-        -int anchoBloque
-        -int altoBloque
-        +filas(int filas) ConfiguracionNivelBuilder
-        +filasResistentes(int filas) ConfiguracionNivelBuilder
-        +anchoBloque(int ancho) ConfiguracionNivelBuilder
-        +altoBloque(int alto) ConfiguracionNivelBuilder
-        +build() ConfiguracionNivel
-    }
+direction LR
 
-    class ConfiguracionNivel {
-        -int filas
-        -int filasResistentes
-        -int anchoBloque
-        -int altoBloque
-        +getFilas() int
-        +getFilasResistentes() int
-        +getAnchoBloque() int
-        +getAltoBloque() int
-    }
+class BlockBreakerGame {
+    +crearBloques() void
+}
 
-    class BlockBreakerGame {
-        +crearBloques(int filas) void
-    }
+class LevelConfigurationBuilder {
+    <<Builder>>
+    -int filas
+    -int filasResistentes
+    -int anchoBloque
+    -int altoBloque
+    +filas(int filas) LevelConfigurationBuilder
+    +filasResistentes(int filas) LevelConfigurationBuilder
+    +anchoBloque(int anchoBloque) LevelConfigurationBuilder
+    +altoBloque(int altoBloque) LevelConfigurationBuilder
+    +build() LevelConfiguration
+}
 
-    class Level {
-        <<abstract>>
-        +crearNivel(int ancho, int alto, ConfiguracionNivel config) ArrayList~Block~
-    }
+class LevelConfiguration {
+    -int filas
+    -int filasResistentes
+    -int anchoBloque
+    -int altoBloque
+    +getFilas() int
+    +getFilasResistentes() int
+    +getAnchoBloque() int
+    +getAltoBloque() int
+}
 
-    ConfiguracionNivelBuilder ..> ConfiguracionNivel : build
-    BlockBreakerGame ..> ConfiguracionNivelBuilder : utiliza
-    BlockBreakerGame ..> Level : genera nivel
-    Level ..> ConfiguracionNivel : recibe configuracion
+class Level {
+    <<abstract>>
+    +crearNivel(int ancho, int alto, LevelConfiguration config) ArrayList~Block~
+}
+
+BlockBreakerGame ..> LevelConfigurationBuilder : configura
+LevelConfigurationBuilder ..> LevelConfiguration : build
+BlockBreakerGame ..> LevelConfiguration : obtiene
+BlockBreakerGame ..> Level : entrega configuracion
+Level --> LevelConfiguration : utiliza
 ```
