@@ -99,6 +99,10 @@ class PingBall {
     -Color color
     -boolean estaQuieto
     -BallMovement estrategia
+    +estaQuieto() boolean
+    +setEstaQuieto(boolean bb) void
+    +setXY(float x, float y) void
+    +getY() float
     +draw(ShapeRenderer shape) void
     +update() void
     +setEstrategia(BallMovement estrategia) void
