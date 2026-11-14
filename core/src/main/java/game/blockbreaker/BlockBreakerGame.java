@@ -34,7 +34,7 @@ public class BlockBreakerGame extends ApplicationAdapter {
 	    crearBloques();
 		
 	    shape = new ShapeRenderer();
-	    ball = new PingBall(Gdx.graphics.getWidth()/2-10, 41, 9, 5, 7, true);
+	    ball = new PingBall(Gdx.graphics.getWidth()/2-10, 41, 9, 7, 9, true);
 	    pad = new Paddle(Gdx.graphics.getWidth()/2-50,40,100,10);
 	       
 	}
@@ -54,7 +54,10 @@ public class BlockBreakerGame extends ApplicationAdapter {
 	        builder.filas(4).filasResistentes(1);
 	    } else {
 	        nivelActual = new HardLevel();
-	        builder.filas(6).filasResistentes(6);
+	        //Se redujo la cantidad de filas resistentes de 6 a 2 para que así el resto sean creadas por el
+	        //método crearBloque de la clase HardLevel
+	        builder.filas(6).filasResistentes(2);
+	        
 	    }
 
 		blocks = nivelActual.crearNivel(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), builder.build());
@@ -119,7 +122,7 @@ public class BlockBreakerGame extends ApplicationAdapter {
 		// Verificar si la pelota cayó
 		if (ball.getY() < 0) {
 			gestor.perderVida();
-			ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 9, 5, 7, true);
+			ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 9, 7, 9, true);
 			
 			//aplicamos la velocidad por nivel
 			aplicarVelocidadPorNivel();
@@ -130,7 +133,7 @@ public class BlockBreakerGame extends ApplicationAdapter {
 			gestor.reiniciarPartida();
 			crearBloques();
 			
-			ball = new PingBall(pad.getX() + pad.getWidth() / 2 - 5, pad.getY() + pad.getHeight() + 11, 9, 5, 7, true);
+			ball = new PingBall(pad.getX() + pad.getWidth() / 2 - 5, pad.getY() + pad.getHeight() + 11, 9, 7, 9, true);
 			// Resetea la velocidad de vuelta a Nivel 1
 			aplicarVelocidadPorNivel(); 
             
@@ -140,7 +143,7 @@ public class BlockBreakerGame extends ApplicationAdapter {
 		if (blocks.size() == 0) {
 			gestor.siguienteNivel();
 			crearBloques();
-			ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 9, 5, 7, true);
+			ball = new PingBall(pad.getX()+pad.getWidth()/2-5, pad.getY()+pad.getHeight()+11, 9, 7, 9, true);
 			
 			//aplicamos la velocidad por nivel
 			aplicarVelocidadPorNivel();

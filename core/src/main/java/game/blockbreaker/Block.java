@@ -32,9 +32,11 @@ public abstract class Block implements Renderizable {
     //método abstracto
     public abstract void recibirGolpe();
     
-    //Setters
+    //Setters (corrcción feedback, ahora se hace copia)
     public void setColor(Color color) {
-    	cc = color;
+    	if (color != null) {
+    		this.cc = new Color(color);
+    	}
     }
     
     public void setDestroyed(boolean destroyed) {
@@ -52,6 +54,9 @@ public abstract class Block implements Renderizable {
     
     public boolean isDestroyed() { return destroyed;}
     
-    public Color getColor() { return cc;}
+    //Correcion de la función get, también hacemos una copia ahora de forma defensiva
+    public Color getColor() { return new Color(cc);}
+    
+    
     
 }
